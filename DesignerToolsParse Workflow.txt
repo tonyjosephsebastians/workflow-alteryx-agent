@@ -1,0 +1,884 @@
+2025.2DesignerToolsParse Workflow XML Parser Tool
+xml-parser.png Workflow XML Parser Tool
+Abstract
+Use the Workflow XML Parser tool to extract workflow properties, tool configurations, and connection details.
+
+Use the Workflow XML Parser tool to extract workflow properties, tool configurations, and connection details.
+
+Marketplace Tool
+
+This tool is not automatically installed with Alteryx Designer. To use this tool, download it from the Alteryx Marketplace.
+
+Requirements and Compatibility Notes
+The Workflow XML Parser tool is compatible with Designer and Server version 2022.1 and newer.
+
+The tool is compatible with both Alteryx Multi-threaded Processing (AMP) and the original Engine.
+
+Tool Components
+The Workflow XML Parser tool has 4 anchors:
+
+Input anchor: I input anchor: This anchor serves as the tool's input and should contain the target workflow XML in a single record.
+
+Output anchors:
+
+W (Workflows) output anchor: This anchor outputs your workflow properties. This includes all elements from the Properties and MetaInfo sections of the Workflow XML. Events, Constants, and RuntimeProperties are output as XML objects since many child elements can exist for each parent element.
+
+T (Tools) output anchor: This anchor outputs your tool properties. The most common tool configuration elements are parsed and the full tool XML is provided for further analysis. Refer to the section below for details on what elements are parsed.
+
+C (Connections) output anchor: This anchor outputs all connection details, including all origin and destinations along with the anchor names.
+
+Configure the Tool
+This tool requires the entire workflow XML to reside in a single cell (single column and single row) of your input data. To best achieve this, open files using the Blob Input tool to pull the yx* binaries into the workflows. Then, convert the workflow binaries to a string using the Blob Convert tool set to UTF-8.
+
+Choose field that contains Workflow XML: Select the field (column) that contains the workflow XML string.
+
+Workflow Output Fields
+Field Name
+
+Description
+
+Menu Location
+
+Menu Item
+
+Corresponding Option
+
+Values
+
+Notes
+
+Workflow_yxmdVer 
+
+The version of Alteryx Designer that was used to modify the workflow last.
+
+Auto Created*
+
+Built-in
+
+YYYY.X
+
+Workflow_RunE2 
+
+Is the AMP engine enabled for the workflow?
+
+Runtime
+
+Use AMP Engine
+
+T or Null
+
+Property_XML 
+
+Full XML for the "Properties" section.
+
+N/A
+
+N/A
+
+N/A
+
+Properties_Memory_max 
+
+Specific Memory Amount defined by the user (in MBs).
+
+Runtime
+
+Memory Limit (MB)
+
+Integer
+
+Properties_Memory_default 
+
+True: Use Global Default,
+
+False: Use Specific Amount.
+
+Runtime
+
+Memory Limit Radio
+
+True or False
+
+Properties_GlobalRecordLimit 
+
+The user-defined limit for all inputs (blank = no limit).
+
+Runtime
+
+Record Limit for All Inputs
+
+Integer
+
+Properties_TempFiles 
+
+A specific temp folder defined by the user.
+
+Runtime
+
+Use Specific Folder
+
+Folder Path
+
+Properties_TempFiles_default 
+
+True: Use Global Default,
+
+False: Use Specific Folder.
+
+Runtime
+
+Temporary Files Radion
+
+True or False
+
+Properties_Annotation_on 
+
+The Annotations visibility setting.
+
+Canvas
+
+Annotations
+
+True or False
+
+Properties_Annotation_includeToolName 
+
+Are Annotations displayed with the tool name?
+
+Canvas
+
+Annotations
+
+True or False
+
+Properties_ConvErrorLimit 
+
+Number of conversions to limit (0 = no limit).
+
+Runtime
+
+Maximum Errors per Location
+
+Integer
+
+Properties_ConvErrorLimit_Stop 
+
+Stop processing when the limit is reached.
+
+Runtime
+
+Checkbox
+
+True or False
+
+Properties_CancelOnError 
+
+Cancel running the workflow on error.
+
+Runtime
+
+Checkbox
+
+True or False
+
+Properties_DisableBrowse 
+
+Disable all Browse tools.
+
+Runtime
+
+Checkbox
+
+True or False
+
+Properties_EnablePerformanceProfiling 
+
+Enable Performance Profiling.
+
+Runtime
+
+Checkbox
+
+True or False
+
+Properties_RunWithE2 
+
+Use AMP engine.
+
+Runtime
+
+Checkbox
+
+True or False
+
+Properties_SortedGrouping 
+
+Engine Compatibility Mode.
+
+Runtime
+
+Checkbox
+
+True or Null
+
+Properties_PredictiveToolsCodePage 
+
+The code page to use for Predictive tools in the workflow. This setting overrides the selection in Language and Region User Settings.
+
+Runtime
+
+Dropdown
+
+Code page values.
+
+Properties_DisableAllOutput 
+
+Disable all tools that write output.
+
+Runtime
+
+Checkbox
+
+True or False
+
+Properties_ShowAllMacroMessages 
+
+Show all macro messages.
+
+Runtime
+
+Checkbox
+
+True or False
+
+Properties_ShowConnectionStatusIsOn 
+
+Determine what level of Connection Progress is shown (False = hide).
+
+Canvas
+
+Connection Progress
+
+Dropdown
+
+True or False
+
+Properties_ShowConnectionStatusOnlyWhenRunning 
+
+Determine if connection progress is shown only while running.
+
+False = Show,
+
+True = Show only when running.
+
+Canvas
+
+Connection Progress
+
+Dropdown
+
+True or False
+
+Properties_ZoomLevel 
+
+The zoom value when opening the workflow.
+
+Built-In
+
+Built-In
+
+Integer
+
+Properties_LayoutType 
+
+The direction of the tool layout in the canvas.
+
+Canvas
+
+Layout Direction
+
+Dropdown
+
+Horizontal or Vertical
+
+Properties_IsTemplate 
+
+Defines if the workflow is a template (YXTD).
+
+Built-In
+
+Built-In
+
+True or False
+
+MetaInfo_NameIsFileName 
+
+Meta Info
+
+Use File Name
+
+Radio Button
+
+True or False
+
+MetaInfo_Name 
+
+Meta Info
+
+Custom
+
+Radio, Text Input
+
+Text
+
+MetaInfo_Description 
+
+The description of the workflow shown either in Server, on the App splash screen, or on hover in the Designer tool palette.
+
+Meta Info
+
+Description
+
+Text Input
+
+Text
+
+MetaInfo_RootToolName 
+
+The root tool name that helps identify versions to group.
+
+Meta Info
+
+Root Tool Name
+
+Text Input
+
+Text
+
+Macros Only
+
+MetaInfo_ToolVersion 
+
+The version of the tool to use when multiple macros exist with the same RootToolName.
+
+Meta Info
+
+Tool Version
+
+Text Input
+
+Text
+
+Macros Only
+
+MetaInfo_ToolInDb 
+
+Identifies if the macro is an In-Database tool.
+
+Meta Info
+
+Tool In-Database?
+
+Checkbox
+
+True or False
+
+Macros Only
+
+MetaInfo_CategoryName 
+
+The category where the macro can be found in the Designer tool palette.
+
+Meta Info
+
+Category Name
+
+Text Input
+
+Text
+
+Macros Only
+
+MetaInfo_SearchTags 
+
+The keywords used to find the tool when searching.
+
+Meta Info
+
+Search Tags
+
+Text Input
+
+Text
+
+Macros Only
+
+MetaInfo_Author 
+
+The name of the workflow author.
+
+Meta Info
+
+Name
+
+Text Input
+
+Text
+
+MetaInfo_Company 
+
+The company of the workflow author.
+
+Meta Info
+
+Company
+
+Text Input
+
+Text
+
+MetaInfo_Copyright 
+
+The copyright information for the workflow.
+
+Meta Info
+
+Copyright
+
+Text Input
+
+Text
+
+MetaInfo_DescriptionLink_actual 
+
+The description link (used in the interface for apps and in the tool palette for macros).
+
+Meta Info
+
+URL
+
+Text Input
+
+Text
+
+MetaInfo_DescriptionLink_displayed 
+
+The description link display text (used in the interface for apps and in the tool palette for macros).
+
+Meta Info
+
+Display Text (optional)
+
+Text Input
+
+Text
+
+MetaInfo_WorkflowId 
+
+The current workflow ID of the file.
+
+Built-In
+
+MetaInfo_Telemetry_PreviousWorkflowId 
+
+The previous workflow ID of the file.
+
+Built-In
+
+MetaInfo_Telemetry_OriginWorkflowId 
+
+The initial workflow ID of the file.
+
+Built-In
+
+MetaInfo_PlatformWorkflowId 
+
+The corresponding platform workflow ID.
+
+Built-In
+
+MetaInfo_Example_Description 
+
+The hyperlink text to display (for example, "Open Example").
+
+Manual XML Entry
+
+MetaInfo_Example_File 
+
+The file path for One Tool Example workflow.
+
+Manual XML Entry
+
+The example file path needs to be present in the Samples\Learn one tool at a time folder.
+
+Events_OuterXML 
+
+The full XML object for all Events.
+
+Constants_OuterXML 
+
+The full XML object for all Constants.
+
+RuntimeProperties_OuterXML 
+
+The full XML object for all Runtime Properties.
+
+MetaInfo_OuterXML 
+
+The full XML object for all MetaInfo for the workflow.
+
+Tool Output Fields
+Warning
+
+Tools can have multiple rows if there are 2 or more of the elements parsed. This is common in the Formula tool along with tools that have multiple file connections.
+
+Note
+
+Rows with ParentIds and null ToolIds are empty tool containers.
+
+Field Name
+
+Description
+
+Relevant Tools
+
+ToolID 
+
+The ToolID of the node.
+
+All
+
+Origin_Tools 
+
+The ToolIDs of upstream tools. Data originates from these tools and flows into the specified tool.
+
+Any tool that is connected to an upstream tool.
+
+Destination_Tools 
+
+The ToolIDs of downstream tools. Data originates from the specified tool and flows into these tools.
+
+Any tool that connects downstream to another tool.
+
+ParentToolId 
+
+The Tool Container or Control Container ToolID in which the specified tool is located.
+
+Only filled in when the tool is in a container.
+
+EngineSettings_EngineDll 
+
+The tool-specific EngineDll.
+
+EngineSettings_EngineDllEntryPoint 
+
+The tool-specific EngineDllEntryPoint.
+
+EngineSettings_Macro 
+
+The tool-specific macro path (only applicable for macros).
+
+GuiSettings_Plugin 
+
+The tool-specific Gui Plugin.
+
+GuiSettings_Position_x 
+
+The tool canvas horizontal location.
+
+GuiSettings_Position_y 
+
+The tool canvas vertical location.
+
+GuiSettings_Position_width 
+
+The tool width.
+
+GuiSettings_Position_height 
+
+The tool height.
+
+Properties_OuterXML 
+
+The full XML element for the tool properties.
+
+Properties_Configuration_joinByRecordPos 
+
+True and False settings for whether the Join tool is set to "Join by Record Position."
+
+Join, Join Multiple
+
+Annotation_OuterXML 
+
+The full XML for annotations.
+
+Properties_Annotation_DisplayMode 
+
+The display mode of tool annotation (Canvas Settings, Always, Never).
+
+Properties_SdkSettings_Manifest 
+
+True or False for Manifest.
+
+SDK Tools
+
+Properties_SdkSettings_Language 
+
+The SDK language used.
+
+SDK Tools
+
+Properties_SdkSettings_PluginDir 
+
+The stored directory for the SDK tool.
+
+SDK Tools
+
+Properties_SdkSettings_Transport 
+
+The language-specific transport layer.
+
+SDK Tools
+
+Properties_SdkSettings_OuterXML 
+
+The full XML for tool SDK settings.
+
+SDK Tools
+
+Configuration_OuterXML 
+
+The tool XML (accessible in tool configuration).
+
+Dependencies_OuterXML 
+
+The full XML for tool-specific dependencies.
+
+MetaInfo_OuterXML 
+
+ 
+
+Formula_Field 
+
+Formula Field Name
+
+Formula Tool
+
+Formula_Size 
+
+Formula Field Size
+
+Formula Tool
+
+Formula_Type 
+
+Formula Field Type
+
+Formula Tool
+
+Formula_Enabled 
+
+Describes if the formula expression is enabled.
+
+Formula Tool
+
+Expression 
+
+Formula Expression
+
+Dynamic Select, Filter, Formula, Multi-Field Formula, Multi-Row Formula
+
+Field Name
+
+Description
+
+Relevant Tools
+
+Filter_Simple 
+
+Formula Expression
+
+Filter Tool
+
+Filter_Field 
+
+Simple filter field selected.
+
+Filter Tool
+
+Filter_Operator 
+
+Simple filter field operator.
+
+Filter Tool
+
+Filter_Operands 
+
+Simple filter operands.
+
+Filter Tool
+
+DefaultAnnotationText 
+
+The default annotation text of a tool.
+
+Any
+
+AnnotationText 
+
+The custom annotation text of a tool.
+
+Python_JupyterProduction 
+
+True or False setting to determine if Jupyter is set to run in production mode.
+
+Python Tool
+
+Python_vEnvName 
+
+The Python environment used for running the script.
+
+Python Tool
+
+Python_vEnvName_OuterXML 
+
+The full XML for the vEnvName element.
+
+Python Tool
+
+Python_Notebook 
+
+The script run while the Python tool is in interactive mode.
+
+Python Tool
+
+Python_productionModeScript 
+
+The script run while the Python tool is in production mode.
+
+Python Tool
+
+RScript 
+
+The script run in the R tool.
+
+R Tool
+
+File_File 
+
+The full file path entered in the text box.
+
+Dynamic Input, Input Data, Macro Input, Output Data, Run Command
+
+File_OutputFileName 
+
+Determines if the file name is output as a full path or only the file name.
+
+File_FileFormat 
+
+The numeric value for the file format.
+
+Dynamic Input, Input Data, Macro Input, Output Data, Run Command
+
+File_SearchSubDirs 
+
+The option checked to Search Sub Directories for a file.
+
+File_RecordLimit 
+
+The record limit for file input.
+
+File_OuterXML 
+
+The full XML for the file element.
+
+Dynamic Input, Input Data, Macro Input, Output Data, Run Command
+
+File_MaxRecords 
+
+The record limit for file output.
+
+Dynamic Input, Input Data, Macro Input, Output Data, Run Command
+
+File_Table 
+
+The table referenced as a part of the file input.
+
+Dynamic Input, Input Data, Macro Input, Output Data, Run Command
+
+File_CreateMode 
+
+In-DB Create Mode
+
+In-DB
+
+CreateMode_OuterXML 
+
+The full XML for In-DB Create Mode.
+
+File_PreSQL 
+
+The PreSQL statement run prior to executing a query.
+
+Dynamic Input, Input Data, Macro Input, Output Data, Run Command
+
+File_PostSQL 
+
+The PostSQL statement run after executing a query.
+
+Dynamic Input, Input Data, Macro Input, Output Data, Run Command
+
+RScript_OuterXML 
+
+The full XML for the R script element.
+
+FileFormatName 
+
+The readable format name for file format referenced in File_FileFormat.
+
+DesignerToolName 
+
+The tool name as seen in Designer.
+
+DesignerToolCategory 
+
+The tool category as seen in Designer.
+
+ToolGroup 
+
+Connection Output Fields
+Field Name
+
+Description
+
+Origin_ToolID 
+
+The tool ID at the beginning of the connection.
+
+Origin_Connection 
+
+The anchor name at the beginning of the connection.
+
+Destination_ToolID 
+
+The tool ID at the end of the connection.
+
+Destination_Connection 
+
+The anchor name at the end of the connection.
+
+name 
+
+Connection Name
+
+Wireless 
+
+Is the connection wireless (True or False)?
+
+Workflow XML Parser Tool
+Requirements and Compatibility Notes
+Tool Components
+Configure the Tool
+Workflow Output Fields
+Tool Output Fields
+Connection Output Fields
