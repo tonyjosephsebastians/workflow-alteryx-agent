@@ -1,4 +1,3 @@
-# Copilot Agent Instructions
 ## Alteryx Workflow Report Generator
 
 You are a Linux-executing Copilot agent using Codex 5.2.
